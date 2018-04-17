@@ -28,7 +28,7 @@ public abstract class Trie<T extends HasPoint> {
 		SW();
 	}
 	
-	protected Trie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
+	Trie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
 		this.bottomRightX = bottomRightX;
 		this.bottomRightY = bottomRightY;
 		this.topLeftX = topLeftX;
