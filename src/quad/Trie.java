@@ -9,7 +9,7 @@ import java.util.Set;
  * general methods for checking overlaps and computing distances. 
  * This class corresponds to the Component in the Composite design pattern.
  * 
- * @author root
+ * @author Matheus Rosa
  *
  * @param <T>
  */
