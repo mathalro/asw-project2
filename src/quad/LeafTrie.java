@@ -47,10 +47,9 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 
 	@Override
 	Trie<T> insert(T point) {
-		content.add(point);
-		if (content.size() > Trie.getCapacity()) {
-			// create a new NodeTrie
-			return divideNode(point, null);
+		this.content.add(point);
+		if (this.content.size() > Trie.getCapacity()) {
+			return this.divideNode(point);
 		}
 		return this;
 	}
@@ -60,8 +59,7 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 		while (content.contains(point)) content.remove(point);
 		content.add(point);
 		if (content.size() > Trie.getCapacity()) {
-			// create a new NodeTrie
-			return divideNode(point, null);
+			return divideNode(point);
 		}
 		return this;
 	}
@@ -73,17 +71,18 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 	 *  
 	 * @param point
 	 */
-	private Trie<T> divideNode(T point, NodeTrie<T> newNode) {
-		insertReplace(point);
+	private Trie<T> divideNode(T point) {
+		// insertReplace(point);
+		NodeTrie<T> newNode = new NodeTrie<T>(this.topLeftX, this.topLeftY, this.bottomRightX, this.bottomRightY);
 		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2;
 		double midY = this.topLeftY + (this.bottomRightY - this.topLeftY) / 2;
-		for (T entry : content) {
+		for (T entry : this.content) {
 			double x = entry.getX();
 			double y = entry.getY();
-			if (x < midX && y < midY); 				// insert at first new node quadrant 
-			else if (x >= midX && y < midY);		// insert at second new node quadrant
-			else if (x < midX && y >= midY);		// insert at third new node quadrant
-			else;									// insert at fourth new node quadrant
+			if (x < midX && y < midY) newNode.tries.get(Quadrant.NW).insert(entry); 
+			else if (x >= midX && y < midY) newNode.tries.get(Quadrant.NE).insert(entry);
+			else if (x < midX && y >= midY) newNode.tries.get(Quadrant.SW).insert(entry);
+			else newNode.tries.get(Quadrant.SE).insert(entry);
 		}
 		content.clear();
 		
