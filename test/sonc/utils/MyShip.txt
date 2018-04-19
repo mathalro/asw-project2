@@ -1,0 +1,8 @@
+
+import sonc.battle.Ship;
+
+public class MyShip extends Ship {
+	
+	
+
+}
