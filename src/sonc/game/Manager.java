@@ -148,8 +148,12 @@ public class Manager implements Serializable
 	}
 	
 	void reset()
-	{
-		Manager.playersFile = null;
-		Manager.instance = new Manager();
+	{		
+		try (FileOutputStream stream = new FileOutputStream(playersFile);
+			 ObjectOutputStream serializer = new ObjectOutputStream(stream))
+		{		
+			this.allPlayers = new Players();
+			serializer.writeObject(this);			
+		} catch (Exception e) {}
 	}
 }

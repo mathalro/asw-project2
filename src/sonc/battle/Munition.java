@@ -36,9 +36,10 @@ public abstract class Munition extends MovingObject implements HasPoint
 	//Methods
 	void escape()
 	{
-		
+		this.setX(this.getX() + World.getCollisionDistance() * Math.cos(getHeading()));
+		this.setY(this.getY() + World.getCollisionDistance() * Math.sin(getHeading()));
 	}
 	
 	//Abstract methods
-	abstract int fireDelay();	
+	abstract int fireDelay();
 }

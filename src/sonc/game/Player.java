@@ -14,15 +14,6 @@ public class Player implements Serializable
 	private String nick;
 	private String password;
 	private String code;
-	//The ship really need to be stored? Doesn't have any
-	//mention of a "getShip" or "setShip" in the API,
-	//but it says that we need to store the instance
-	//of the ship for some reason that I don't know. Well,
-	//the "instanceShip" method create an instance of a ship,
-	//returning it and storing in this attribute as well. I don't
-	//know how will we use it, but I doing what the specification says
-	//just to follow a development pattern.
-	private Ship ship;
 
 	//Getters and setters	
 	String getNick()
@@ -66,7 +57,7 @@ public class Player implements Serializable
 			agentBuilder.getInstance(Ship.class, this.code, this.nick);
 		} catch (IOException | InstantiationException | IllegalAccessException | NameNotFoundException e)
 		{
-			throw new SoncException(e.getMessage());
+			throw new SoncException("An error occurred on checking player's code.", e);
 		}
 	}
 	
@@ -76,10 +67,10 @@ public class Player implements Serializable
 		{
 			this.checkCode();
 			AgentBuilder agentBuilder = new AgentBuilder();
-			return ship = agentBuilder.getInstance(Ship.class, this.code, this.nick);
+			return agentBuilder.getInstance(Ship.class, this.code, this.nick);
 		} catch (Exception e)
 		{
-			return ship = null;
+			return null;
 		}
 	}
 	

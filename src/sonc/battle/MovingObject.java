@@ -3,7 +3,7 @@ package sonc.battle;
 import sonc.quad.HasPoint;
 
 public abstract class MovingObject implements HasPoint
-{
+{	
 	//Attributes
 	private double x;
 	private double y;
@@ -56,7 +56,7 @@ public abstract class MovingObject implements HasPoint
 	//Methods
 	protected double normalizeAngle(double angle)
 	{
-		
+		return angle % 2 * Math.PI;		
 	}
 	
 	protected double distanceTo(MovingObject other)
@@ -68,19 +68,26 @@ public abstract class MovingObject implements HasPoint
 	
 	protected double headingTo(MovingObject other)
 	{
-		
+		return Math.atan2(other.y - this.y, other.x - this.x) - this.heading;
 	}
 	
 	final void updatePosition()
 	{
-		
+		this.x += this.speed * Math.cos(this.heading);
+		this.y += this.speed * Math.sin(this.heading);
 	}
 	
+	//Not implemented
 	final void doRotate(double delta)
 	{
+		delta = Math.min(delta, this.getMaxRotation());
+		delta = Math.max(delta, -this.getMaxRotation());
+		
+		this.heading = this.normalizeAngle(this.heading + delta);
 		
 	}
 	
+	//Not implemented
 	final void doChangeSpeed(double delta)
 	{
 		
@@ -88,7 +95,7 @@ public abstract class MovingObject implements HasPoint
 	
 	void move()
 	{
-		
+		//I believe we don't need to implement something in here
 	}
 	
 	void hitdBy(MovingObject moving)
@@ -97,7 +104,7 @@ public abstract class MovingObject implements HasPoint
 	}
 	
 	public boolean isDestroyed()
-	{
+	{		
 		return (this.status <= 0);
 	}
 	

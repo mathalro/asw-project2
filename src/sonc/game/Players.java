@@ -22,7 +22,12 @@ public class Players implements Serializable
 	//Methods
 	boolean register(String nick, String password)
 	{
-		return (this.players.put(nick, new Player(nick, password)) == null);
+		if (this.players.get(nick) == null)
+		{
+			this.players.put(nick, new Player(nick, password));
+			return true;
+		}
+		return false;			
 	}
 	
 	boolean updatePassword(String nick, String oldPassword, String newPassword)

@@ -22,10 +22,10 @@ public abstract class Trie<T extends HasPoint> {
 	private static int capacity;
 
 	static enum Quadrant {
-		NE(),
-		NW(),
-		SE(),
-		SW();
+		NE,
+		NW,
+		SE,
+		SW;
 	}
 	
 	Trie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {

@@ -68,12 +68,13 @@ public class Bullet extends Munition implements HasPoint
 	//Constructors
 	public Bullet(double heading)
 	{
-		
+		super(10, heading, Bullet.initialSpeed);
 	}
 	
 	//Methods
 	int fireDelay()
 	{
-		
+		//I think this method will be overridden later, so this is why I'm returning 0
+		return 0;
 	}
 }

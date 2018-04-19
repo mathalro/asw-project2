@@ -8,7 +8,7 @@ public class SoncException extends Exception
 	//Constructors
 	public SoncException()
 	{
-		//What is needed to be writted in here?
+		super("It has occurred an error on system.");
 	}
 	
 	public SoncException(String message)

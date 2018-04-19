@@ -14,6 +14,7 @@ public class GuidedMissile extends Munition implements HasPoint
 	private int impactDamage;
 	private int size;
 	private String color;
+	private MovingObject target; 
 	
 	//Getters and setters
 	public static void setDamage(int damage)
@@ -72,17 +73,20 @@ public class GuidedMissile extends Munition implements HasPoint
 	//Constructors
 	GuidedMissile(double heading, MovingObject target)
 	{
-		
+		super(600, heading, GuidedMissile.initialSpeed);
+		this.target = target;
 	}
 	
 	//Methods
+	//Not implemented
 	void move()
 	{
 		
 	}
-		
+	
 	int fireDelay()
 	{
-		
+		//I think this method will be overridden later, so this is why I'm returning 0
+		return 0;
 	}	
 }

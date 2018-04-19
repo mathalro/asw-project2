@@ -1,5 +1,7 @@
 package sonc.battle;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import sonc.quad.HasPoint;
 
@@ -11,7 +13,7 @@ public class Ship extends MovingObject implements HasPoint
 	private static double maxShipSpeedChange;
 	private static int maxStatus;
 	private World world;
-	private int lasFireRound;
+	private int lastFireRound;
 	private ShipCommand command;
 	private int points;
 	private double maxSpeed;
@@ -66,11 +68,11 @@ public class Ship extends MovingObject implements HasPoint
 	}	
 	protected int getLastFireRound()
 	{
-		return this.lasFireRound;
+		return this.lastFireRound;
 	}
 	void setLastFireRound(int lastFireRound)
 	{
-		this.lasFireRound = lastFireRound;
+		this.lastFireRound = lastFireRound;
 	}	
 	ShipCommand getCommand()
 	{
@@ -118,59 +120,65 @@ public class Ship extends MovingObject implements HasPoint
 	}
 	
 	//Constructor
+	//Not implemented
 	public Ship()
 	{
-		
+		super(100, 0, 20);
 	}
 	
 	//Methods
 	protected boolean canFire(Munition munition)
 	{
-		
+		return (this.world.getCurrentRound() - this.lastFireRound) > munition.fireDelay();
 	}
 	
 	void resetPoints()
 	{
-		
+		this.points = 0;
 	}
 	
 	void addPoints(int points)
 	{
-		
+		this.points += points;
 	}	
 	
 	void execute()
 	{
-		
+		if (this.command != null)
+			this.command.execute();
 	}
-	
+
 	protected final void changeSpeed(double delta)
 	{
-		
+		this.command = new ChangeSpeedCommand(this, delta);		
 	}
 	
 	protected final void rotate(double delta)
 	{
-		
+		this.command = new RotateCommand(this, delta);
 	}
 	
 	protected final void fire(Munition munition)
 	{
-		
+		this.command = new FireCommand(this.world, this, munition);
 	}
 	
 	protected final Set<Ship> getOtherShips()
 	{
-		
+		Set<Ship> otherShips = new HashSet<>();
+		for (Ship ship : this.world.getShips())
+			if (ship != this)
+				otherShips.add(ship);
+		return otherShips;
 	}
 	
 	protected void init()
 	{
-		
+		//I believe we don't need to implement something in here
 	}
 	
 	protected void move()
 	{
-		
+		//I believe we don't need to implement something in here
 	}	
 }
