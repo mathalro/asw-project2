@@ -511,3 +511,4 @@ public class WorldViewer extends Frame {
 		}
 	}
 }
+>>>>>>> c82a864c565660cd386ea05a0b0b064ac1119174

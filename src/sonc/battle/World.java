@@ -7,6 +7,10 @@ import java.util.Set;
 
 import sonc.quad.PointQuadTree;
 import sonc.shared.Movie;
+<<<<<<< HEAD
+=======
+import sonc.utils.SafeExecutor;
+>>>>>>> c82a864c565660cd386ea05a0b0b064ac1119174
 
 public class World
 {
@@ -78,8 +82,13 @@ public class World
 	void addShipAtRandom(Ship ship)
 	{
 		ship.setX(Math.random() * World.width);
+<<<<<<< HEAD
 		ship.setY(Math.random() * World.height);					
 		ship.init();
+=======
+		ship.setY(Math.random() * World.height);
+		ship.setHeading(Math.random() * (2 * Math.PI));
+>>>>>>> c82a864c565660cd386ea05a0b0b064ac1119174
 		ship.resetPoints();
 		this.addMovingObject(ship);
 	}
@@ -94,14 +103,60 @@ public class World
 		this.addMovingObject(ship);
 	}
 	
-	//Not implemented
 	public Movie battle(List<Ship> ships)
 	{
-		Movie movie = new Movie();
-		
-		
-		
-		
+		Movie movie = new Movie();		
+		for (Iterator<Ship> iterator = ships.iterator(); iterator.hasNext();)
+		{
+			try
+			{
+				Ship ship = iterator.next();
+				SafeExecutor.executeSafelly(() -> ship.init());
+			} catch (Exception e)
+			{
+				iterator.remove();
+			}
+		}		
+		for (int round = 1; round <= World.getRounds(); round++)
+		{			
+			this.setCurrentRound(round);
+			this.pointQuadTree = new PointQuadTree<>(0, 0, 1000, 1000);			
+			for (Ship ship : ships)
+				this.addShipAtRandom(ship);									
+			while (this.getShips().size() > 1)
+			{								
+				for (MovingObject movingObject : this.pointQuadTree.getAll())
+				{
+					try
+					{
+						SafeExecutor.executeSafelly(() -> movingObject.move());
+					} catch (Exception e)
+					{
+						this.pointQuadTree.delete(movingObject);
+					}
+				}								
+				movie.newFrame();				
+				for (MovingObject movingObject : this.pointQuadTree.getAll())
+				{					
+					int x = ((Double) movingObject.getX()).intValue();
+					int y = ((Double) movingObject.getY()).intValue();
+					float heading = ((Double) movingObject.getHeading()).floatValue();
+					int size = movingObject.getSize();
+					String color = movingObject.getColor();					
+					movie.addOblong(x, y, heading, size, color);										
+					if (movingObject instanceof Ship)
+					{
+						Ship ship = (Ship) movingObject;						
+						String name = ship.getName();
+						int points = ship.getPoints();
+						int status = ship.getStatus();						
+						movie.addScore(name, points, status);						
+					}					
+				}				
+				this.update();
+			}
+		}
+		this.setCurrentRound(0);
 		return movie;
 	}
 	
