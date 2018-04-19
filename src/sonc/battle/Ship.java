@@ -120,10 +120,9 @@ public class Ship extends MovingObject implements HasPoint
 	}
 	
 	//Constructor
-	//Not implemented
 	public Ship()
 	{
-		super(100, 0, 20);
+		super(1000, 0, 0);
 	}
 	
 	//Methods
@@ -174,11 +173,11 @@ public class Ship extends MovingObject implements HasPoint
 	
 	protected void init()
 	{
-		//I believe we don't need to implement something in here
+		
 	}
 	
 	protected void move()
 	{
-		//I believe we don't need to implement something in here
+		
 	}	
 }

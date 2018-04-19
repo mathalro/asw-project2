@@ -78,7 +78,6 @@ public class GuidedMissile extends Munition implements HasPoint
 	}
 	
 	//Methods
-	//Not implemented
 	void move()
 	{
 		
@@ -86,7 +85,6 @@ public class GuidedMissile extends Munition implements HasPoint
 	
 	int fireDelay()
 	{
-		//I think this method will be overridden later, so this is why I'm returning 0
 		return 0;
 	}	
 }

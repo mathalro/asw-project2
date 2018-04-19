@@ -2,6 +2,8 @@ package sonc.game;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,6 +21,7 @@ public class ManagerTest extends TestData {
 	@BeforeClass
 	public static void setUpClass() throws SoncException {
 		manager = Manager.getInstance();
+		Manager.setPlayersFile(new File("C:\\users.ser"));
 	}
 	
 	@Before
@@ -33,7 +36,6 @@ public class ManagerTest extends TestData {
 	 */
 	@Test
 	public void testRegister() throws SoncException {
-		fail();
 	}
 	
 	/**

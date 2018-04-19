@@ -72,7 +72,7 @@ public class PointQuadTree<T extends HasPoint> {
 	 * 
 	 * @param point
 	 */
-	void insert(T point) {
+	public void insert(T point) {
 		root.insert(point);
 	}
 	
@@ -81,7 +81,7 @@ public class PointQuadTree<T extends HasPoint> {
 	 * 
 	 * @param point
 	 */
-	void insertReplace(T point) {
+	public void insertReplace(T point) {
 		root.insertReplace(point);
 	}
 }

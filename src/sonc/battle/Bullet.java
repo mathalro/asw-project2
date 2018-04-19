@@ -74,7 +74,6 @@ public class Bullet extends Munition implements HasPoint
 	//Methods
 	int fireDelay()
 	{
-		//I think this method will be overridden later, so this is why I'm returning 0
 		return 0;
 	}
 }

@@ -56,7 +56,8 @@ public abstract class MovingObject implements HasPoint
 	//Methods
 	protected double normalizeAngle(double angle)
 	{
-		return angle % 2 * Math.PI;		
+		double mod = angle % (2 * Math.PI);
+		return (mod >= 0) ? mod : (2 * Math.PI) + mod;
 	}
 	
 	protected double distanceTo(MovingObject other)
@@ -77,25 +78,26 @@ public abstract class MovingObject implements HasPoint
 		this.y += this.speed * Math.sin(this.heading);
 	}
 	
-	//Not implemented
 	final void doRotate(double delta)
 	{
 		delta = Math.min(delta, this.getMaxRotation());
-		delta = Math.max(delta, -this.getMaxRotation());
-		
-		this.heading = this.normalizeAngle(this.heading + delta);
-		
+		delta = Math.max(delta, -this.getMaxRotation());		
+		this.heading = this.normalizeAngle(this.heading + delta);		
 	}
 	
-	//Not implemented
 	final void doChangeSpeed(double delta)
-	{
-		
+	{	
+		delta = Math.min(delta, this.getMaxSpeedChange());
+		delta = Math.max(delta, -this.getMaxSpeedChange());		
+		double speed = this.speed + delta;		
+		speed = Math.min(speed, this.getMaxSpeed());
+		speed = Math.max(speed, -this.getMaxSpeed());		
+		this.speed = speed;		
 	}
 	
 	void move()
 	{
-		//I believe we don't need to implement something in here
+		
 	}
 	
 	void hitdBy(MovingObject moving)
