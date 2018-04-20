@@ -16,7 +16,6 @@ import java.util.Set;
 public class NodeTrie<T extends HasPoint> extends Trie<T>{
 
 	Map<Trie.Quadrant, Trie<T>> tries;
-	private double EPS = 0.000001;
 	
 	protected NodeTrie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
 		super(topLeftX, topLeftY, bottomRightX, bottomRightY);

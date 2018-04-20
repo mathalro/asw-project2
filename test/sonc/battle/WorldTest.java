@@ -150,6 +150,7 @@ public class WorldTest extends TestData {
 	 */
 	@Test
 	public void testUpdateWithStalkerAndDuck() {
+		fail(); // this test is entering in loop 
 		TestViewer viewer = new TestViewer();
 		
 		Ship stalker = new StalkerBot();
@@ -194,6 +195,7 @@ public class WorldTest extends TestData {
 	 */
 	@Test
 	public void testUpdateWith2Stalkers() {
+		fail(); // this method is entering in loop 
 		Ship stalker1 = new StalkerBot();
 		Ship stalker2 = new StalkerBot();
 	

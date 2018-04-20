@@ -1,7 +1,5 @@
 package sonc.quad;
 
-import java.lang.reflect.Array;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +15,6 @@ import java.util.Set;
 public class LeafTrie<T extends HasPoint> extends Trie<T> {
 
 	private ArrayList<T> content;
-	private double EPS = 0.01;
 	
 	public LeafTrie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
 		super(topLeftX, topLeftY, bottomRightX, bottomRightY);
