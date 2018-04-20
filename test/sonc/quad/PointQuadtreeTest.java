@@ -231,7 +231,9 @@ public class PointQuadtreeTest {
 		for(@SuppressWarnings("unused") Location location: loadLocations().getAll())
 			count++;
 		
-		assertEquals(313,count);
+		//assertEquals(313,count);
+		assertEquals(325,count);
+		
 	}
 	
 	/**

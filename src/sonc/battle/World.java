@@ -160,7 +160,7 @@ public class World
 		for (Iterator<MovingObject> iterator = movingObjects.iterator(); iterator.hasNext();)
 		{				
 			MovingObject movingObject = iterator.next();			
-			//movingObject.updatePosition();			
+			movingObject.updatePosition();			
 			double x = movingObject.getX();
 			double y = movingObject.getY();
 			double collisionDistance = World.getCollisionDistance();
@@ -168,7 +168,7 @@ public class World
 			double worldHeight = World.getHeight();
 			
 			if ((x < 0) || (x > worldWidth) || (y < 0) || (y > worldHeight))
-			{
+			{				
 				if (movingObject instanceof Ship)
 				{
 					Ship currentShip = (Ship) movingObject;
@@ -179,44 +179,21 @@ public class World
 				}
 				iterator.remove();				
 			} else
-			{
-								
-				Set<MovingObject> otherMovingObjects = this.pointQuadTree.getAll();
-				
-				for (MovingObject otherMovingObject : otherMovingObjects)
-				{
-					if ((movingObject != otherMovingObject) && (movingObject.distanceTo(otherMovingObject) <= World.collisionDistance))
+			{					
+				Set<MovingObject> nearMovingObjects = this.pointQuadTree.findNear(x, y, collisionDistance);				
+				for (MovingObject nearMovingObject : nearMovingObjects)
+				{															
+					if (movingObject != nearMovingObject)
 					{
-						
-						System.out.println();
-						
-						
-						movingObject.hitdBy(otherMovingObject);
-						if (otherMovingObject instanceof Ship)
-							((Ship) otherMovingObject).addPoints(otherMovingObject.getImpactDamage());
+						movingObject.hitdBy(nearMovingObject);
+						if (nearMovingObject instanceof Ship)
+							((Ship) nearMovingObject).addPoints(nearMovingObject.getImpactDamage());
 						else
-							((Munition) otherMovingObject).getOrigin().addPoints(otherMovingObject.getImpactDamage());						 						
+							((Munition) nearMovingObject).getOrigin().addPoints(nearMovingObject.getImpactDamage());
 					}
 				}
 				if (movingObject.isDestroyed())
-					iterator.remove();
-				
-				
-				
-				/*
-				Set<MovingObject> nearMovingObjects = this.pointQuadTree.findNear(x, y, collisionDistance);
-				
-				for (MovingObject nearMovingObject : nearMovingObjects)
-				{															
-					movingObject.hitdBy(nearMovingObject);
-					if (nearMovingObject instanceof Ship)
-						((Ship) nearMovingObject).addPoints(nearMovingObject.getImpactDamage());
-					else
-						((Munition) nearMovingObject).getOrigin().addPoints(nearMovingObject.getImpactDamage());					
-				}
-				if (movingObject.isDestroyed())
-					iterator.remove();
-				*/								
+					iterator.remove();								
 			}			
 		}				
 		this.pointQuadTree = new PointQuadtree<>(0, 1000, 1000, 0);

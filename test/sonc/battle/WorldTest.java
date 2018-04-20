@@ -181,9 +181,6 @@ public class WorldTest extends TestData {
 		
 		viewer.terminate();
 		
-		System.out.println("Duck    : " + duck.getStatus() + " | " + duck.getPoints() + " | " + duck.getImpactDamage());
-		System.out.println("Stalker : " + stalker.getStatus() + " | " + stalker.getPoints() + " | " + duck.getImpactDamage());
-		
 		assertEquals(STATUS,stalker.getStatus());
 		
 		assertEquals(STATUS - stalker.getPoints(),duck.getStatus());
