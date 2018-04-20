@@ -1,5 +1,6 @@
 package sonc.quad;
 
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -63,7 +64,14 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 
 	@Override
 	Trie<T> insertReplace(T point) {
-		while (content.contains(point)) content.remove(point);
+		ArrayList<T> newContent = new ArrayList<T>();
+		for (T it : content) {
+			if (it.getX() != point.getX() || it.getY() != it.getY()) {
+				newContent.add(it);
+			}
+		}
+		content.clear();
+		content = newContent;
 		content.add(point);
 		if (content.size() > Trie.getCapacity()) {
 			return divideNode(point);

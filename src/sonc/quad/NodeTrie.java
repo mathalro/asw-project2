@@ -24,9 +24,6 @@ public class NodeTrie<T extends HasPoint> extends Trie<T>{
 		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2.0;
 		double midY = this.bottomRightY + (this.topLeftY - this.bottomRightY) / 2.0;
 		
-		//System.out.printf("Current quadrant: %f %f %f %f\n", topLeftX, topLeftY, bottomRightX, bottomRightY);
-		//System.out.printf("Mid: %f %f\n", midX, midY);
-		
 		LeafTrie<T> nw = new LeafTrie<T>(topLeftX, topLeftY, midX, midY); 
 		this.tries.put(Quadrant.NW, nw);
 		LeafTrie<T> ne = new LeafTrie<T>(midX, topLeftY, bottomRightX, midY); 

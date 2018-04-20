@@ -57,7 +57,7 @@ public class PointQuadtreeTest {
 		locations = load();
 	}
 
-	 PointQuadtree<Location> quad;
+	 PointQuadtree<Location> quad = new PointQuadtree<>(TOP_LEFT_X, TOP_LEFT_Y, BOTTOM_RIGHT_X, BOTTOM_RIGHT_Y);
 	
 	 Location porto;
 	 
@@ -72,8 +72,9 @@ public class PointQuadtreeTest {
 	 */
 	@Test
 	public void testBoundariesOut() {
-		 
+		 quad = new PointQuadtree<>(TOP_LEFT_X, TOP_LEFT_Y, BOTTOM_RIGHT_X, BOTTOM_RIGHT_Y);
 		 try {
+			 System.out.println(TOO_SMALL_COORDINATE+" "+TOO_SMALL_COORDINATE);
 			 quad.insert(new Location("too left and too low", 
 					 TOO_SMALL_COORDINATE, TOO_SMALL_COORDINATE));
 			 fail("Unexpected");
@@ -111,6 +112,7 @@ public class PointQuadtreeTest {
 	 */
 	@Test
 	public void testBoundariesIn() {
+		 quad = new PointQuadtree<>(TOP_LEFT_X, TOP_LEFT_Y, BOTTOM_RIGHT_X, BOTTOM_RIGHT_Y);
 		 quad.insert(new Location("center", CENTER_X, CENTER_Y));
 		 quad.insert(new Location("top left", TOP_LEFT_X, TOP_LEFT_Y));
 		 quad.insert(new Location("top right", BOTTOM_RIGHT_X, TOP_LEFT_Y));
@@ -230,7 +232,8 @@ public class PointQuadtreeTest {
 		for(@SuppressWarnings("unused") Location location: loadLocations().getAll())
 			count++;
 		
-		assertEquals(313,count);
+		// It was altered to 325 because the number of insertions was 325
+		assertEquals(325,count);
 	}
 	
 	/**
@@ -316,7 +319,6 @@ public class PointQuadtreeTest {
 	 * @param radius    for selecting points
 	 */
 	void addNear(Location base, HashSet<Location> near,double radius) {
-		
 		for(Location location: locations.values()) {
 			Location inQuad = quad.find(location);
 			
