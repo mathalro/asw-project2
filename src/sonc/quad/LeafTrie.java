@@ -1,5 +1,6 @@
 package sonc.quad;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,11 +53,11 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 		if (isOnBoundary(point)) {
 			this.content.add(point);
 			if (this.content.size() > Trie.getCapacity()) {
-				System.out.println("Entra");
 				return this.divideNode(point);
 			}
 			return this;
 		}
+		
 		throw new PointOutOfBoundException();		
 	}
 
@@ -82,26 +83,28 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2.0;
 		double midY = this.bottomRightY + (this.topLeftY - this.bottomRightY) / 2.0;
 		
-		//System.out.println(topLeftX+" "+topLeftY+" "+bottomRightX+" "+bottomRightY);
-		
 		for (T entry : this.content) {
 			double x = entry.getX();
 			double y = entry.getY();
 			if (x < midX && y > midY) {
-				//System.out.println("Insert "+x+"-"+y+"at NW");
-				newNode.tries.get(Quadrant.NW).insert(entry); 
+				newNode.tries.put(Quadrant.NW, newNode.tries.get(Quadrant.NW).insert(entry));
+				Set<T> tmp = new HashSet<T>();
+				newNode.tries.get(Quadrant.NW).collectAll(tmp);
 			}
 			else if (x >= midX && y > midY) {
-				//System.out.println("Insert"+x+"-"+y+" at NE");
-				newNode.tries.get(Quadrant.NE).insert(entry);
+				newNode.tries.put(Quadrant.NE, newNode.tries.get(Quadrant.NE).insert(entry));
+				Set<T> tmp = new HashSet<T>();
+				newNode.tries.get(Quadrant.NE).collectAll(tmp);
 			}
 			else if (x < midX && y <= midY) {
-				//System.out.println("Insert "+x+"-"+y+"at SW");
-				newNode.tries.get(Quadrant.SW).insert(entry);
+				newNode.tries.put(Quadrant.SW, newNode.tries.get(Quadrant.SW).insert(entry));
+				Set<T> tmp = new HashSet<T>();
+				newNode.tries.get(Quadrant.SW).collectAll(tmp);
 			}
 			else {
-				//System.out.println("Insert "+x+"-"+y+"at SE");
-				newNode.tries.get(Quadrant.SE).insert(entry);
+				newNode.tries.put(Quadrant.SE, newNode.tries.get(Quadrant.SE).insert(entry));
+				Set<T> tmp = new HashSet<T>();
+				newNode.tries.get(Quadrant.SE).collectAll(tmp);
 			}
 		}
 		content.clear();
