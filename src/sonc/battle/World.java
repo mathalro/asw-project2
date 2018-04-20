@@ -5,12 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import sonc.quad.PointQuadTree;
+import sonc.quad.PointQuadtree;
 import sonc.shared.Movie;
-<<<<<<< HEAD
-=======
+
 import sonc.utils.SafeExecutor;
->>>>>>> c82a864c565660cd386ea05a0b0b064ac1119174
 
 public class World
 {
@@ -21,7 +19,7 @@ public class World
 	private static double height;
 	private static double collisionDistance;
 	private int currentRound;
-	private PointQuadTree<MovingObject> pointQuadTree; 
+	private PointQuadtree<MovingObject> pointQuadTree; 
 	
 	//Getters and setters
 	public static int getRounds()
@@ -76,19 +74,14 @@ public class World
 	//Constructors
 	public World()
 	{
-		this.pointQuadTree = new PointQuadTree<>(0, 0, 1000, 1000);
+		this.pointQuadTree = new PointQuadtree<>(0, 0, 1000, 1000);
 	}
 		
 	void addShipAtRandom(Ship ship)
 	{
 		ship.setX(Math.random() * World.width);
-<<<<<<< HEAD
-		ship.setY(Math.random() * World.height);					
-		ship.init();
-=======
 		ship.setY(Math.random() * World.height);
 		ship.setHeading(Math.random() * (2 * Math.PI));
->>>>>>> c82a864c565660cd386ea05a0b0b064ac1119174
 		ship.resetPoints();
 		this.addMovingObject(ship);
 	}
@@ -120,7 +113,7 @@ public class World
 		for (int round = 1; round <= World.getRounds(); round++)
 		{			
 			this.setCurrentRound(round);
-			this.pointQuadTree = new PointQuadTree<>(0, 0, 1000, 1000);			
+			this.pointQuadTree = new PointQuadtree<>(0, 0, 1000, 1000);			
 			for (Ship ship : ships)
 				this.addShipAtRandom(ship);									
 			while (this.getShips().size() > 1)
@@ -198,7 +191,7 @@ public class World
 					iterator.remove();
 			}
 		}
-		this.pointQuadTree = new PointQuadTree<>(0, 0, 1000, 1000);
+		this.pointQuadTree = new PointQuadtree<>(0, 0, 1000, 1000);
 		for (MovingObject movingObject : movingObjects)
 			this.pointQuadTree.insert(movingObject);
 	}

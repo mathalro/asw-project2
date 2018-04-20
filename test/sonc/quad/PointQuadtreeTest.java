@@ -63,8 +63,7 @@ public class PointQuadtreeTest {
 	 
 	@Before
 	public void prepare() {
-		quad = new PointQuadtree<>(TOP_LEFT_X,TOP_LEFT_Y,BOTTOM_RIGHT_X,BOTTOM_RIGHT_Y);
-		
+		 PointQuadtree<Location> quad;		
 		porto = locations.get("Porto");
 	}
 	

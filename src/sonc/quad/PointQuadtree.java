@@ -12,11 +12,11 @@ import java.util.Set;
  *
  * @param <T>
  */
-public class PointQuadTree<T extends HasPoint> {
+public class PointQuadtree<T extends HasPoint> {
 	
 	Trie<T> root;
 	
-	public PointQuadTree(double topLeftX,
+	public PointQuadtree(double topLeftX,
         double topLeftY,
         double bottomRightX,
         double bottomRightY) {
