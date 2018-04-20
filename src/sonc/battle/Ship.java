@@ -1,14 +1,13 @@
 package sonc.battle;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import sonc.quad.HasPoint;
 
 public class Ship extends MovingObject implements HasPoint
 {
 	//Attributes
-	private static int damage;
+	private static int damage = 1000;
 	private static double maxShipRotation;
 	private static double maxShipSpeedChange;
 	private static int maxStatus;
@@ -16,10 +15,6 @@ public class Ship extends MovingObject implements HasPoint
 	private int lastFireRound;
 	private ShipCommand command;
 	private int points;
-	private double maxSpeed;
-	private double maxSpeedChange;
-	private double maxRotation;
-	private int impactDamage;
 	private Ship origin;
 	private int size;
 	private String color;
@@ -88,19 +83,19 @@ public class Ship extends MovingObject implements HasPoint
 	}	
 	double getMaxSpeed()
 	{
-		return this.maxSpeed;
+		return Ship.maxShipSpeedChange;
 	}	
 	double getMaxSpeedChange()
 	{
-		return this.maxSpeedChange;
+		return Ship.maxShipSpeedChange;
 	}	
 	double getMaxRotation()
 	{
-		return this.maxRotation;
+		return Ship.maxShipRotation;
 	}	
 	final int getImpactDamage()
 	{
-		return this.impactDamage;
+		return Ship.damage;
 	}	
 	final Ship getOrigin()
 	{
@@ -122,13 +117,18 @@ public class Ship extends MovingObject implements HasPoint
 	//Constructor
 	public Ship()
 	{
-		super(1000, 0, 0);
+		super(1000, 0, 0);		
+		this.color = "";
+		this.size = 5;
+		this.lastFireRound = Integer.MIN_VALUE;
+		this.setHeading(0);		
 	}
 	
 	//Methods
 	protected boolean canFire(Munition munition)
-	{
-		return (this.world.getCurrentRound() - this.lastFireRound) > munition.fireDelay();
+	{	
+		return (this.lastFireRound == Integer.MIN_VALUE) || 
+			   (this.world.getCurrentRound() - this.lastFireRound) > munition.fireDelay();
 	}
 	
 	void resetPoints()
@@ -165,6 +165,10 @@ public class Ship extends MovingObject implements HasPoint
 	protected final Set<Ship> getOtherShips()
 	{
 		Set<Ship> otherShips = new HashSet<>();
+		
+		if (this.world == null)
+			System.out.println("Nulo");
+		
 		for (Ship ship : this.world.getShips())
 			if (ship != this)
 				otherShips.add(ship);
@@ -173,11 +177,11 @@ public class Ship extends MovingObject implements HasPoint
 	
 	protected void init()
 	{
-
+		
 	}
 	
 	protected void move()
 	{
-
-	}
+		
+	}	
 }

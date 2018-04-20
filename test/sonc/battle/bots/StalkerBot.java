@@ -16,11 +16,12 @@ public class StalkerBot extends BasicShip {
 
 	@Override
 	protected void move() {
+		
 		double speed = getSpeed();
 		Ship target =  nearest(aliveShips());
 		double rotation = normalizeAngle(headingTo(target) - getHeading()); 
 		Bullet bullet = new Bullet(headingTo(target));
-				
+		
 		if(speed < CRUISING_SPEED)
 			changeSpeed(CRUISING_SPEED);
 		else if(canFire(bullet)) 

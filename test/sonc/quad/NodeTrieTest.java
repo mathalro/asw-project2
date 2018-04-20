@@ -3,7 +3,6 @@ package sonc.quad;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -20,8 +19,6 @@ import org.junit.Test;
  * @author Jos&eacute; paulo Leal {@code zp@dcc.fc.up.pt}
  */
 public class NodeTrieTest {
-	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
 	private static int CAPACITY = 10;
 	
@@ -65,6 +62,7 @@ public class NodeTrieTest {
 	public void testEmptyOnCreation() {
 		node.collectNear(TOP_LEFT_X, TOP_LEFT_Y, LARGE_RADIUS, points);
 		assertEquals(0,points.size());
+		
 		assertNull(node.find(CENTER));
 	}
 	
@@ -109,11 +107,7 @@ public class NodeTrieTest {
 				location = new Location("", x, y);
 			} while(locations.contains(location));
 			
-			
-			System.out.println(location.getX()+" "+location.getY());
-			//System.out.println("Before");
 			node.insert(location);
-			//System.out.println("After");
 			node.collectNear(TOP_LEFT_X, TOP_LEFT_Y, LARGE_RADIUS, points);
 
 			assertEquals(count+1,points.size());

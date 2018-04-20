@@ -5,13 +5,11 @@ import sonc.quad.HasPoint;
 public class GuidedMissile extends Munition implements HasPoint
 {
 	//Attributes
-	private static int damage;
+	private static int damage = 600;
 	private static double maxMissileRotation;
 	private static double initialSpeed;
 	private static int fireDelay;
 	private double maxSpeed;
-	private double maxRotation;
-	private int impactDamage;
 	private int size;
 	private String color;
 	private MovingObject target; 
@@ -55,11 +53,11 @@ public class GuidedMissile extends Munition implements HasPoint
 	}	
 	double getMaxRotation()
 	{
-		return this.maxRotation;
+		return GuidedMissile.maxMissileRotation;
 	}	
 	int getImpactDamage()
 	{
-		return this.impactDamage;
+		return GuidedMissile.damage;
 	}	
 	public int getSize()
 	{
@@ -77,13 +75,20 @@ public class GuidedMissile extends Munition implements HasPoint
 		this.target = target;
 	}
 	
+	//Methods
 	void move()
 	{
+		double angle = this.headingTo(this.target);
+		double difference = (2 * Math.PI) - angle;
 		
+		if (difference < angle)
+			this.doRotate(-difference);
+		else
+			this.doRotate(angle);
 	}
 	
 	int fireDelay()
 	{
-		return 0;
+		return GuidedMissile.fireDelay;
 	}	
 }

@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import sonc.TestData;
+import sonc.quad.Trie;
 import sonc.utils.WorldViewer;
 
 /**
@@ -35,6 +36,9 @@ public class FireCommandTest extends TestData {
 		Ship.setMaxShipRotation(Math.PI/32);
 		
 		Bullet.setInitialSpeed(BULLET_SPEED);
+		Bullet.setFireDelay(5); //It should exists?
+		
+		Trie.setCapacity(5);
 	}
 
 	/**

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import sonc.battle.Ship;
+import sonc.battle.World;
 import sonc.shared.Movie;
 import sonc.shared.SoncException;
 
@@ -125,26 +126,15 @@ public class Manager implements Serializable
 	
 	public Movie battle(List<String> nicks)
 	{
-		Movie movie = new Movie();
-		movie.newFrame();
-		List<Ship> ships = new ArrayList<>();
+		World world = new World();
+		List<Player> players = new ArrayList<>();
+		List<Ship> ships = new ArrayList<>();		
 		for (String nick : nicks)
-			ships.add(this.allPlayers.getPlayer(nick).instanceShip());
-		Collections.shuffle(ships);
-		for (Ship ship : ships)
-		{
-			String name = ship.getName();
-			int points = ship.getPoints();
-			int status = ship.getStatus();
-			int x = ((Double) ship.getX()).intValue();
-			int y = ((Double) ship.getY()).intValue();
-			float heading = ((Double) ship.getHeading()).floatValue();
-			int size = ship.getSize();
-			String color = ship.getColor();			
-			movie.addScore(name, points, status);
-			movie.addOblong(x, y, heading, size, color);
-		}
-		return movie;
+			players.add(this.allPlayers.getPlayer(nick));
+		for (Player player : players)
+			ships.add(player.instanceShip());		
+		Collections.shuffle(ships);		
+		return world.battle(ships);		
 	}
 	
 	void reset()

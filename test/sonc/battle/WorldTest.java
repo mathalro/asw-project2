@@ -17,6 +17,7 @@ import sonc.TestViewer;
 import sonc.battle.bots.ShooterBot;
 import sonc.battle.bots.SittingDuckBot;
 import sonc.battle.bots.StalkerBot;
+import sonc.quad.Trie;
 import sonc.shared.Movie;
 import sonc.shared.Movie.Frame;
 import sonc.shared.Movie.Score;
@@ -46,6 +47,9 @@ public class WorldTest extends TestData {
 		Ship.setMaxShipRotation(Math.PI/32);
 		
 		Bullet.setInitialSpeed(BULLET_SPEED);
+		
+		Trie.setCapacity(5); //It should be delegated by us or not?
+		
 		
 		/*--------------------------------------------------------------*\
 		 *                 Change this to visualize tests               *
@@ -163,6 +167,7 @@ public class WorldTest extends TestData {
 			for(Ship ship: world.getShips()) {
 				ship.move();
 				ship.execute();
+				
 			}
 			
 			world.update();
@@ -172,7 +177,12 @@ public class WorldTest extends TestData {
 				
 		}
 		
+		
+		
 		viewer.terminate();
+		
+		System.out.println("Duck    : " + duck.getStatus() + " | " + duck.getPoints() + " | " + duck.getImpactDamage());
+		System.out.println("Stalker : " + stalker.getStatus() + " | " + stalker.getPoints() + " | " + duck.getImpactDamage());
 		
 		assertEquals(STATUS,stalker.getStatus());
 		

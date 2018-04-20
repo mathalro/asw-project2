@@ -7,7 +7,6 @@ import java.util.Set;
 
 import sonc.quad.PointQuadtree;
 import sonc.shared.Movie;
-
 import sonc.utils.SafeExecutor;
 
 public class World
@@ -74,11 +73,12 @@ public class World
 	//Constructors
 	public World()
 	{
-		this.pointQuadTree = new PointQuadtree<>(0, 0, 1000, 1000);
+		this.pointQuadTree = new PointQuadtree<>(0, 1000, 1000, 0);
 	}
 		
 	void addShipAtRandom(Ship ship)
 	{
+		ship.setWorld(this);
 		ship.setX(Math.random() * World.width);
 		ship.setY(Math.random() * World.height);
 		ship.setHeading(Math.random() * (2 * Math.PI));
@@ -88,6 +88,7 @@ public class World
 	
 	void addShipAt(Ship ship, double x, double y, double heading)
 	{
+		ship.setWorld(this);
 		ship.setX(x);
 		ship.setY(y);
 		ship.setHeading(heading);		
@@ -113,7 +114,7 @@ public class World
 		for (int round = 1; round <= World.getRounds(); round++)
 		{			
 			this.setCurrentRound(round);
-			this.pointQuadTree = new PointQuadtree<>(0, 0, 1000, 1000);			
+			this.pointQuadTree = new PointQuadtree<>(0, 1000, 1000, 0);
 			for (Ship ship : ships)
 				this.addShipAtRandom(ship);									
 			while (this.getShips().size() > 1)
@@ -157,14 +158,15 @@ public class World
 	{
 		Set<MovingObject> movingObjects = this.pointQuadTree.getAll();		
 		for (Iterator<MovingObject> iterator = movingObjects.iterator(); iterator.hasNext();)
-		{
+		{				
 			MovingObject movingObject = iterator.next();			
-			movingObject.updatePosition();			
+			//movingObject.updatePosition();			
 			double x = movingObject.getX();
 			double y = movingObject.getY();
 			double collisionDistance = World.getCollisionDistance();
 			double worldWidth = World.getWidth();
-			double worldHeight = World.getHeight();			
+			double worldHeight = World.getHeight();
+			
 			if ((x < 0) || (x > worldWidth) || (y < 0) || (y > worldHeight))
 			{
 				if (movingObject instanceof Ship)
@@ -178,20 +180,46 @@ public class World
 				iterator.remove();				
 			} else
 			{
+								
+				Set<MovingObject> otherMovingObjects = this.pointQuadTree.getAll();
+				
+				for (MovingObject otherMovingObject : otherMovingObjects)
+				{
+					if ((movingObject != otherMovingObject) && (movingObject.distanceTo(otherMovingObject) <= World.collisionDistance))
+					{
+						
+						System.out.println();
+						
+						
+						movingObject.hitdBy(otherMovingObject);
+						if (otherMovingObject instanceof Ship)
+							((Ship) otherMovingObject).addPoints(otherMovingObject.getImpactDamage());
+						else
+							((Munition) otherMovingObject).getOrigin().addPoints(otherMovingObject.getImpactDamage());						 						
+					}
+				}
+				if (movingObject.isDestroyed())
+					iterator.remove();
+				
+				
+				
+				/*
 				Set<MovingObject> nearMovingObjects = this.pointQuadTree.findNear(x, y, collisionDistance);
+				
 				for (MovingObject nearMovingObject : nearMovingObjects)
-				{										
+				{															
 					movingObject.hitdBy(nearMovingObject);
 					if (nearMovingObject instanceof Ship)
 						((Ship) nearMovingObject).addPoints(nearMovingObject.getImpactDamage());
 					else
-						((Munition) nearMovingObject).getOrigin().addPoints(nearMovingObject.getImpactDamage());
+						((Munition) nearMovingObject).getOrigin().addPoints(nearMovingObject.getImpactDamage());					
 				}
 				if (movingObject.isDestroyed())
 					iterator.remove();
-			}
-		}
-		this.pointQuadTree = new PointQuadtree<>(0, 0, 1000, 1000);
+				*/								
+			}			
+		}				
+		this.pointQuadTree = new PointQuadtree<>(0, 1000, 1000, 0);
 		for (MovingObject movingObject : movingObjects)
 			this.pointQuadTree.insert(movingObject);
 	}

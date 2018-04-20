@@ -21,9 +21,10 @@ public class Players implements Serializable
 	
 	//Methods
 	boolean register(String nick, String password)
-	{
-		if (this.players.get(nick) == null)
+	{				
+		if ((isValid(nick)) && (!password.equals("")) && (this.players.get(nick) == null))
 		{
+			nick = nick.trim();
 			this.players.put(nick, new Player(nick, password));
 			return true;
 		}
@@ -32,11 +33,14 @@ public class Players implements Serializable
 	
 	boolean updatePassword(String nick, String oldPassword, String newPassword)
 	{
-		Player player = this.players.get(nick);
-		if ((player != null) && (player.authenticate(oldPassword)))
+		if (!newPassword.equals(""))
 		{
-			player.setPassword(newPassword);
-			return true;
+			Player player = this.players.get(nick);
+			if ((player != null) && (player.authenticate(oldPassword)))
+			{
+				player.setPassword(newPassword);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -60,5 +64,10 @@ public class Players implements Serializable
 				playersNamesWithShips.add(key);
 		Collections.sort(playersNamesWithShips);
 		return playersNamesWithShips;
+	}
+	
+	private boolean isValid(String nick)
+	{
+		return !nick.trim().contains(" ");
 	}
 }

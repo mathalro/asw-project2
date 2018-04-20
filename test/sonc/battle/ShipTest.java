@@ -16,6 +16,7 @@ import org.junit.Test;
 import sonc.TestData;
 import sonc.battle.bots.ShooterBot;
 import sonc.battle.bots.StalkerBot;
+import sonc.quad.Trie;
 
 /**
 * Test super class common to all ships
@@ -29,6 +30,7 @@ public class ShipTest extends TestData {
 	@BeforeClass
 	public static void setUpClass() {
 		Ship.setMaxShipRotation(2*Math.PI);
+		Trie.setCapacity(5); //It should be delegated by us or not?
 	}
 	
 	
@@ -198,7 +200,8 @@ public class ShipTest extends TestData {
 	
 	
 	@Test
-	public void testFire() {
+	public void testFire() {		
+		
 		World world = new World();
 		
 		ship.setWorld(world);

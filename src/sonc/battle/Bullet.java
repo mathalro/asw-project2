@@ -5,13 +5,12 @@ import sonc.quad.HasPoint;
 public class Bullet extends Munition implements HasPoint
 {
 	//Attributes
-	private static int damage;
+	private static int damage = 10;
 	private static double initialSpeed;
 	private static int fireDelay;
 	private double maxSpeed;
 	private double maxSpeedChange;
 	private double maxRotation;
-	private int impactDamage;
 	private int size;
 	private String color;
 		
@@ -54,7 +53,7 @@ public class Bullet extends Munition implements HasPoint
 	}	
 	int getImpactDamage()
 	{
-		return this.impactDamage;
+		return Bullet.damage;
 	}	
 	public int getSize()
 	{
@@ -74,6 +73,6 @@ public class Bullet extends Munition implements HasPoint
 	//Methods
 	int fireDelay()
 	{
-		return 0;
+		return Bullet.fireDelay;
 	}
 }

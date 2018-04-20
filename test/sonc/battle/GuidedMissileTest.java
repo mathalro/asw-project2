@@ -201,12 +201,12 @@ public class GuidedMissileTest extends TestData {
 	public void testMoveMissiletoStationaryShip() {
 		double previous, distance; 
 		ship.setX(SIDE/2);
-		ship.setY(SIDE-MARGIN);
+		ship.setY(SIDE-MARGIN);		
 		
 		guidedMissile = new GuidedMissile(0,ship);
-		guidedMissile.setX(MARGIN); 
+		guidedMissile.setX(MARGIN);
 		guidedMissile.setY(MARGIN);
-	
+		
 		TestViewer viewer = new TestViewer();
 		
 		distance = guidedMissile.distanceTo(ship);
@@ -219,7 +219,6 @@ public class GuidedMissileTest extends TestData {
 			distance = guidedMissile.distanceTo(ship);
 	
 			viewer.frameWith(ship,guidedMissile);
-			
 			
 			assertTrue(distance < previous);
 		} while(distance > MARGIN);

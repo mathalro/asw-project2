@@ -34,7 +34,7 @@ public abstract class MovingObject implements HasPoint
 	}	
 	void setHeading(double heading)
 	{
-		this.heading = heading;
+		this.heading = this.normalizeAngle(heading);
 	}	
 	public double getSpeed()
 	{
@@ -49,7 +49,7 @@ public abstract class MovingObject implements HasPoint
 	MovingObject(int status, double heading, double speed)
 	{
 		this.status = status;
-		this.heading = heading;
+		this.heading = this.normalizeAngle(heading);
 		this.speed = speed;
 	}
 		
@@ -69,7 +69,8 @@ public abstract class MovingObject implements HasPoint
 	
 	protected double headingTo(MovingObject other)
 	{
-		return Math.atan2(other.y - this.y, other.x - this.x) - this.heading;
+		double heading = Math.atan2(other.y - this.y, other.x - this.x) - this.heading;
+		return (heading >= 0) ? heading : heading + (2 * Math.PI);
 	}
 	
 	final void updatePosition()
@@ -81,7 +82,7 @@ public abstract class MovingObject implements HasPoint
 	final void doRotate(double delta)
 	{
 		delta = Math.min(delta, this.getMaxRotation());
-		delta = Math.max(delta, -this.getMaxRotation());		
+		delta = Math.max(delta, -this.getMaxRotation());
 		this.heading = this.normalizeAngle(this.heading + delta);		
 	}
 	

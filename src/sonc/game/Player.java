@@ -55,7 +55,7 @@ public class Player implements Serializable
 		{
 			AgentBuilder agentBuilder = new AgentBuilder();
 			agentBuilder.getInstance(Ship.class, this.code, this.nick);
-		} catch (IOException | InstantiationException | IllegalAccessException | NameNotFoundException e)
+		} catch (IOException | InstantiationException | IllegalAccessException | NameNotFoundException | NullPointerException e)
 		{
 			throw new SoncException("An error occurred on checking player's code.", e);
 		}
