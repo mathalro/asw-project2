@@ -16,20 +16,22 @@ import java.util.Set;
 public class NodeTrie<T extends HasPoint> extends Trie<T>{
 
 	Map<Trie.Quadrant, Trie<T>> tries;
+	private double EPS = 0.000001;
 	
 	protected NodeTrie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
 		super(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		tries = new HashMap<>();
-		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2;
-		double midY = this.topLeftY + (this.bottomRightY - this.topLeftY) / 2;
+		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2.0;
+		double midY = this.bottomRightY + (this.topLeftY - this.bottomRightY) / 2.0;
+		
 		LeafTrie<T> nw = new LeafTrie<T>(topLeftX, topLeftY, midX, midY); 
 		this.tries.put(Quadrant.NW, nw);
 		LeafTrie<T> ne = new LeafTrie<T>(midX, topLeftY, bottomRightX, midY); 
 		this.tries.put(Quadrant.NE, ne);
-		LeafTrie<T> sw = new LeafTrie<T>(bottomRightX, midY, midX, bottomRightY); 
+		LeafTrie<T> sw = new LeafTrie<T>(topLeftX, midY, midX, bottomRightY); 
 		this.tries.put(Quadrant.SW, sw);
 		LeafTrie<T> se = new LeafTrie<T>(midX, midY, bottomRightX, bottomRightY); 
-		this.tries.put(Quadrant.SW, se);
+		this.tries.put(Quadrant.SE, se);
 	}
 
 	@Override
@@ -43,17 +45,18 @@ public class NodeTrie<T extends HasPoint> extends Trie<T>{
 	@Override
 	void collectNear(double x, double y, double radius, Set<T> points) {
 		// test intersection and call collectNear for each quadrant
-		if (tries.get(Trie.Quadrant.NW).overlaps(x, y, radius)) 
+		if (tries.get(Trie.Quadrant.NW).overlaps(x, y, radius)) {
 			tries.get(Trie.Quadrant.NW).collectNear(x, y, radius, points);
-		
-		if (tries.get(Trie.Quadrant.NE).overlaps(x, y, radius)) 
+		}
+		if (tries.get(Trie.Quadrant.NE).overlaps(x, y, radius)) { 
 			tries.get(Trie.Quadrant.NE).collectNear(x, y, radius, points);
-		
-		if (tries.get(Trie.Quadrant.SW).overlaps(x, y, radius))
+		}
+		if (tries.get(Trie.Quadrant.SW).overlaps(x, y, radius)) {
 			tries.get(Trie.Quadrant.SW).collectNear(x, y, radius, points);
-		
-		if (tries.get(Trie.Quadrant.SE).overlaps(x, y, radius)) 
+		}
+		if (tries.get(Trie.Quadrant.SE).overlaps(x, y, radius)) {
 			tries.get(Trie.Quadrant.SE).collectNear(x, y, radius, points);
+		}
 	}
 
 	@Override
@@ -82,14 +85,16 @@ public class NodeTrie<T extends HasPoint> extends Trie<T>{
 	
 	Trie.Quadrant quadrantOf(T point) {
 		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2;
-		double midY = this.topLeftY + (this.bottomRightY - this.topLeftY) / 2;
+		double midY = this.bottomRightY + (this.topLeftY - this.bottomRightY) / 2;
 		double x = point.getX();
 		double y = point.getY();
 		
-		if (x < midX && y < midY) return Trie.Quadrant.NW;
-		else if (x >= midX && y < midY) return Trie.Quadrant.NE;
-		else if (x < midX && y >= midY) return Trie.Quadrant.SW;
-		else return Trie.Quadrant.SE;
+		if (x < midX && y > midY) return Trie.Quadrant.NW;
+		else if (x >= midX && y > midY) return Trie.Quadrant.NE;
+		else if (x < midX && y <= midY) return Trie.Quadrant.SW;
+		else if (x >= midX && y <= midY) return Trie.Quadrant.SE;
+		
+		throw new PointOutOfBoundException();
 	}
 	
 	public String toString() {

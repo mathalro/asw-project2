@@ -14,13 +14,13 @@ import java.util.Set;
  */
 public class PointQuadtree<T extends HasPoint> {
 	
-	Trie<T> root;
+	public Trie<T> root;
 	
 	public PointQuadtree(double topLeftX,
         double topLeftY,
         double bottomRightX,
         double bottomRightY) {
-		root = new LeafTrie<T>(topLeftX, topLeftY, bottomRightX, bottomRightY);
+		this.root = new LeafTrie<T>(topLeftX, topLeftY, bottomRightX, bottomRightY);
 	}
 	
 	/**
@@ -29,7 +29,7 @@ public class PointQuadtree<T extends HasPoint> {
 	 * @param point
 	 */
 	public void delete(T point) {
-		root.delete(point);
+		this.root.delete(point);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class PointQuadtree<T extends HasPoint> {
 	 * @param point
 	 */
 	public void insert(T point) {
-		root.insert(point);
+		this.root.insert(point);
 	}
 	
 	/**
@@ -82,6 +82,6 @@ public class PointQuadtree<T extends HasPoint> {
 	 * @param point
 	 */
 	public void insertReplace(T point) {
-		root.insertReplace(point);
+		this.root.insertReplace(point);
 	}
 }

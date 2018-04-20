@@ -1,5 +1,6 @@
 package sonc.quad;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,11 +14,12 @@ import java.util.Set;
  */
 public class LeafTrie<T extends HasPoint> extends Trie<T> {
 
-	private HashSet<T> content;
+	private ArrayList<T> content;
+	private double EPS = 0.01;
 	
 	public LeafTrie(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
 		super(topLeftX, topLeftY, bottomRightX, bottomRightY);
-		content = new HashSet<T>();
+		content = new ArrayList<T>();
 	}
 
 	@Override
@@ -28,7 +30,7 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 	}
 
 	@Override
-	void collectNear(double x, double y, double radius, Set<T> points) { 
+	void collectNear(double x, double y, double radius, Set<T> points) {
 		for (T it : content) {
 			if (getDistance(it.getX(), it.getY(), x, y) <= radius) points.add(it); 
 		}
@@ -47,11 +49,15 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 
 	@Override
 	Trie<T> insert(T point) {
-		this.content.add(point);
-		if (this.content.size() > Trie.getCapacity()) {
-			return this.divideNode(point);
+		if (isOnBoundary(point)) {
+			this.content.add(point);
+			if (this.content.size() > Trie.getCapacity()) {
+				System.out.println("Entra");
+				return this.divideNode(point);
+			}
+			return this;
 		}
-		return this;
+		throw new PointOutOfBoundException();		
 	}
 
 	@Override
@@ -72,21 +78,41 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 	 * @param point
 	 */
 	private Trie<T> divideNode(T point) {
-		// insertReplace(point);
 		NodeTrie<T> newNode = new NodeTrie<T>(this.topLeftX, this.topLeftY, this.bottomRightX, this.bottomRightY);
-		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2;
-		double midY = this.topLeftY + (this.bottomRightY - this.topLeftY) / 2;
+		double midX = this.topLeftX + (this.bottomRightX - this.topLeftX) / 2.0;
+		double midY = this.bottomRightY + (this.topLeftY - this.bottomRightY) / 2.0;
+		
+		//System.out.println(topLeftX+" "+topLeftY+" "+bottomRightX+" "+bottomRightY);
+		
 		for (T entry : this.content) {
 			double x = entry.getX();
 			double y = entry.getY();
-			if (x < midX && y < midY) newNode.tries.get(Quadrant.NW).insert(entry); 
-			else if (x >= midX && y < midY) newNode.tries.get(Quadrant.NE).insert(entry);
-			else if (x < midX && y >= midY) newNode.tries.get(Quadrant.SW).insert(entry);
-			else newNode.tries.get(Quadrant.SE).insert(entry);
+			if (x < midX && y > midY) {
+				//System.out.println("Insert "+x+"-"+y+"at NW");
+				newNode.tries.get(Quadrant.NW).insert(entry); 
+			}
+			else if (x >= midX && y > midY) {
+				//System.out.println("Insert"+x+"-"+y+" at NE");
+				newNode.tries.get(Quadrant.NE).insert(entry);
+			}
+			else if (x < midX && y <= midY) {
+				//System.out.println("Insert "+x+"-"+y+"at SW");
+				newNode.tries.get(Quadrant.SW).insert(entry);
+			}
+			else {
+				//System.out.println("Insert "+x+"-"+y+"at SE");
+				newNode.tries.get(Quadrant.SE).insert(entry);
+			}
 		}
 		content.clear();
 		
 		return newNode;
+	}
+	
+	private boolean isOnBoundary(T point) {
+		double x = point.getX();
+		double y = point.getY();		
+		return !(y < this.bottomRightY || y > this.topLeftY || x < this.topLeftX || x > this.bottomRightX);
 	}
 	
 }
