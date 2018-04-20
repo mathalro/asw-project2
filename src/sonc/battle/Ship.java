@@ -179,5 +179,5 @@ public class Ship extends MovingObject implements HasPoint
 	protected void move()
 	{
 
-	}	
+	}
 }
