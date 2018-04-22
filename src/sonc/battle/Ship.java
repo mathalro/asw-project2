@@ -165,14 +165,23 @@ public class Ship extends MovingObject implements HasPoint
 	protected final Set<Ship> getOtherShips()
 	{
 		Set<Ship> otherShips = new HashSet<>();
-		
-		if (this.world == null)
-			System.out.println("Nulo");
-		
 		for (Ship ship : this.world.getShips())
 			if (ship != this)
 				otherShips.add(ship);
 		return otherShips;
+	}
+	
+	final void doFire(World world, Munition munition)
+	{
+		if (canFire(munition))
+		{
+			setLastFireRound(world.getCurrentRound());
+			munition.setX(getX());
+			munition.setY(getY());
+			munition.setOrigin(this);
+			munition.escape();
+			world.addMovingObject(munition);
+		}
 	}
 	
 	protected void init()

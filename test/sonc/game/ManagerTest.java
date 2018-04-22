@@ -27,7 +27,7 @@ public class ManagerTest extends TestData {
 	@BeforeClass
 	public static void setUpClass() throws SoncException {
 		manager = Manager.getInstance();
-		Manager.setPlayersFile(new File("C:\\users.ser"));
+		Manager.setPlayersFile(new File("users.ser"));
 	}
 	
 	@Before

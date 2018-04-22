@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /**
  * A Trie that has no descendants. This class is the leaf in the composite Pattern.
  * 
@@ -55,7 +54,6 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 			}
 			return this;
 		}
-		
 		throw new PointOutOfBoundException();		
 	}
 
@@ -121,6 +119,5 @@ public class LeafTrie<T extends HasPoint> extends Trie<T> {
 		double x = point.getX();
 		double y = point.getY();		
 		return !(y < this.bottomRightY || y > this.topLeftY || x < this.topLeftX || x > this.bottomRightX);
-	}
-	
+	}	
 }

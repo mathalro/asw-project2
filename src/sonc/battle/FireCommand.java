@@ -18,14 +18,6 @@ public class FireCommand implements ShipCommand
 	//Methods
 	public void execute()
 	{
-		if (this.ship.canFire(this.munition))
-		{
-			this.ship.setLastFireRound(this.world.getCurrentRound());
-			this.munition.setX(this.ship.getX());
-			this.munition.setY(this.ship.getY());
-			this.munition.setOrigin(this.ship);
-			this.munition.escape();
-			this.world.addMovingObject(munition);
-		}
+		this.ship.doFire(this.world, this.munition);
 	}
 }

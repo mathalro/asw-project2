@@ -8,7 +8,7 @@ import java.util.Date;
  * @author José Paulo Leal {@code zp@dcc.fc.up.pt}
  */
 public class TestData {
-	protected static final String MY_CLASS_PATH="war/WEB-INF/classes";
+	protected static final String MY_CLASS_PATH="src";
 	
 	protected static final double SIDE = 1000;
 	protected static final double MARGIN = 100;

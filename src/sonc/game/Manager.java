@@ -50,11 +50,10 @@ public class Manager implements Serializable
 				return Manager.instance = new Manager();
 			else
 			{		
-				try (FileInputStream stream = new FileInputStream(playersFile);
-					 ObjectInputStream deserializer = new ObjectInputStream(stream))
+				try
 				{
-					Manager.instance = (Manager) deserializer.readObject();
-					return Manager.instance;				
+					Manager.instance = restore();
+					return Manager.instance;
 				} catch (IOException | ClassNotFoundException e)
 				{
 					throw new SoncException(e.getMessage());
@@ -65,12 +64,11 @@ public class Manager implements Serializable
 	
 	public boolean register(String userId, String password) throws SoncException
 	{
-		try (FileOutputStream stream = new FileOutputStream(playersFile);
-			 ObjectOutputStream serializer = new ObjectOutputStream(stream))
+		try
 		{
 			boolean registered = this.allPlayers.register(userId, password);
 			if (registered)
-				serializer.writeObject(this);
+				backup(this);
 			return registered;
 		} catch (IOException e)
 		{
@@ -80,12 +78,11 @@ public class Manager implements Serializable
 	
 	public boolean updatePassword(String nick, String oldPassword, String newPassword) throws SoncException
 	{
-		try (FileOutputStream stream = new FileOutputStream(playersFile);
-		     ObjectOutputStream serializer = new ObjectOutputStream(stream))
+		try
 		{
 			boolean updated = this.allPlayers.updatePassword(nick, oldPassword, newPassword);
 			if (updated)
-				serializer.writeObject(this);
+				backup(this);
 			return updated;
 		} catch (IOException e)
 		{
@@ -139,11 +136,34 @@ public class Manager implements Serializable
 	
 	void reset()
 	{		
-		try (FileOutputStream stream = new FileOutputStream(playersFile);
-			 ObjectOutputStream serializer = new ObjectOutputStream(stream))
+		try
 		{		
 			this.allPlayers = new Players();
-			serializer.writeObject(this);			
+			backup(this);			
 		} catch (Exception e) {}
+	}
+	
+	private static Manager restore() throws IOException, ClassNotFoundException
+	{
+		try (FileInputStream stream = new FileInputStream(playersFile);
+			 ObjectInputStream deserializer = new ObjectInputStream(stream))
+		{
+			return (Manager) deserializer.readObject();				
+		} catch (IOException | ClassNotFoundException e)
+		{
+			throw e;
+		}
+	}
+	
+	private static void backup(Manager manager) throws IOException
+	{
+		try (FileOutputStream stream = new FileOutputStream(playersFile);
+		     ObjectOutputStream serializer = new ObjectOutputStream(stream))
+		{		
+			serializer.writeObject(manager);			
+		} catch (IOException e)
+		{
+			throw e;
+		}
 	}
 }

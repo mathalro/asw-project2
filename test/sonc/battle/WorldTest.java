@@ -44,12 +44,15 @@ public class WorldTest extends TestData {
 		WorldViewer.setScale(SCALE);
 		
 		Ship.setMaxStatus(STATUS);
-		Ship.setMaxShipRotation(Math.PI/32);
+		Ship.setMaxShipRotation(Math.PI/32);		
 		
 		Bullet.setInitialSpeed(BULLET_SPEED);
 		
 		Trie.setCapacity(5); //It should be delegated by us or not?
 		
+		//We really need to set these attributes?
+		Ship.setMaxShipSpeedChange(10);
+		Bullet.setFireDelay(1);
 		
 		/*--------------------------------------------------------------*\
 		 *                 Change this to visualize tests               *
@@ -150,7 +153,7 @@ public class WorldTest extends TestData {
 	 */
 	@Test
 	public void testUpdateWithStalkerAndDuck() {
-		fail(); // this test is entering in loop 
+		
 		TestViewer viewer = new TestViewer();
 		
 		Ship stalker = new StalkerBot();
@@ -175,11 +178,9 @@ public class WorldTest extends TestData {
 			
 			viewer.frameWith(world.getMovingObjects());
 			viewer.showScores(world.getShips());
-				
+			
 		}
-		
-		
-		
+				
 		viewer.terminate();
 		
 		assertEquals(STATUS,stalker.getStatus());
@@ -195,7 +196,7 @@ public class WorldTest extends TestData {
 	 */
 	@Test
 	public void testUpdateWith2Stalkers() {
-		fail(); // this method is entering in loop 
+		
 		Ship stalker1 = new StalkerBot();
 		Ship stalker2 = new StalkerBot();
 	
@@ -205,6 +206,7 @@ public class WorldTest extends TestData {
 		int count = 0;
 		
 		TestViewer viewer = new TestViewer();
+		
 		while(stalker2.getStatus() == STATUS) {
 			
 			world.setCurrentRound(count++);
@@ -217,7 +219,7 @@ public class WorldTest extends TestData {
 			world.update();
 			
 			viewer.frameWith(world.getMovingObjects());
-			viewer.showScores(world.getShips());
+			viewer.showScores(world.getShips());			
 		}
 
 		viewer.terminate();

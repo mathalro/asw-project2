@@ -13,6 +13,6 @@ public class PointOutOfBoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public PointOutOfBoundException() {
-		super("The refered point is out of bound. ");
+		super("The refered point is out of bound.");
 	}
 }

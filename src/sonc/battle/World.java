@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import sonc.quad.PointQuadtree;
 import sonc.shared.Movie;
 import sonc.utils.SafeExecutor;
@@ -14,8 +13,8 @@ public class World
 	//Attributes
 	private static int rounds;
 	private static double margin;
-	private static double width;
-	private static double height;
+	private static double width = 1000;
+	private static double height = 1000;
 	private static double collisionDistance;
 	private int currentRound;
 	private PointQuadtree<MovingObject> pointQuadTree; 
@@ -156,49 +155,73 @@ public class World
 	
 	void update()
 	{
-		Set<MovingObject> movingObjects = this.pointQuadTree.getAll();		
-		for (Iterator<MovingObject> iterator = movingObjects.iterator(); iterator.hasNext();)
-		{				
-			MovingObject movingObject = iterator.next();			
-			movingObject.updatePosition();			
-			double x = movingObject.getX();
-			double y = movingObject.getY();
-			double collisionDistance = World.getCollisionDistance();
-			double worldWidth = World.getWidth();
-			double worldHeight = World.getHeight();
-			
-			if ((x < 0) || (x > worldWidth) || (y < 0) || (y > worldHeight))
+		Set<MovingObject> movingObjects = this.pointQuadTree.getAll();
+		Set<MovingObject> newMovingObjects = new HashSet<>();
+				
+		updateAllPositions(movingObjects);
+		
+		for (MovingObject movingObject : movingObjects)
+		{			
+			if (isOutOfTheWorld(movingObject))
 			{				
 				if (movingObject instanceof Ship)
-				{
-					Ship currentShip = (Ship) movingObject;
-					Set<Ship> otherShips = currentShip.getOtherShips();
-					int points =  currentShip.getPoints() / otherShips.size();					
-					for (Ship otherShip : otherShips)
-						otherShip.addPoints(points);
-				}
-				iterator.remove();				
+					sharePointsToOtherShips((Ship) movingObject);
 			} else
-			{					
-				Set<MovingObject> nearMovingObjects = this.pointQuadTree.findNear(x, y, collisionDistance);				
-				for (MovingObject nearMovingObject : nearMovingObjects)
-				{															
-					if (movingObject != nearMovingObject)
-					{
-						movingObject.hitdBy(nearMovingObject);
-						if (nearMovingObject instanceof Ship)
-							((Ship) nearMovingObject).addPoints(nearMovingObject.getImpactDamage());
-						else
-							((Munition) nearMovingObject).getOrigin().addPoints(nearMovingObject.getImpactDamage());
-					}
-				}
-				if (movingObject.isDestroyed())
-					iterator.remove();								
+			{
+				updateOnHitEvent(movingObject);
+				if (!movingObject.isDestroyed())
+					newMovingObjects.add(movingObject);
 			}			
-		}				
+		}
+		
 		this.pointQuadTree = new PointQuadtree<>(0, 1000, 1000, 0);
+		for (MovingObject newMovingObject : newMovingObjects)
+			this.pointQuadTree.insert(newMovingObject);		
+	}
+	
+	private final void updateAllPositions(Set<MovingObject> movingObjects)
+	{
 		for (MovingObject movingObject : movingObjects)
-			this.pointQuadTree.insert(movingObject);
+			movingObject.updatePosition();
+	}
+	
+	private final boolean isOutOfTheWorld(MovingObject movingObject)
+	{
+		double x = movingObject.getX();
+		double y = movingObject.getY();		
+		return ((x < 0) || (x > World.width) || (y < 0) || (y > World.height));		
+	}
+	
+	private final void sharePointsToOtherShips(Ship ship)
+	{
+		Set<Ship> otherShips = ship.getOtherShips();
+		if (otherShips.size() > 0)
+		{
+			int points = ship.getPoints() / otherShips.size();
+			
+			for (Ship otherShip : otherShips)
+				otherShip.addPoints(points);
+		}
+	}
+	
+	private final void updateOnHitEvent(MovingObject movingObject)
+	{
+		Set<MovingObject> otherMovingObjects = this.pointQuadTree.getAll();		
+		for (MovingObject otherMovingObject : otherMovingObjects)
+		{
+			if ((movingObject != otherMovingObject) &&
+			   (movingObject.distanceTo(otherMovingObject) <= World.collisionDistance))
+			{							
+				movingObject.hitdBy(otherMovingObject);				
+				if (movingObject instanceof Ship)
+				{				
+					if (otherMovingObject instanceof Ship)
+						((Ship) otherMovingObject).addPoints(otherMovingObject.getImpactDamage());
+					else
+						((Munition) otherMovingObject).getOrigin().addPoints(otherMovingObject.getImpactDamage());
+				}
+			}
+		}		
 	}
 	
 	void addMovingObject(MovingObject added)

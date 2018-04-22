@@ -82,6 +82,6 @@ public class PointQuadtree<T extends HasPoint> {
 	 * @param point
 	 */
 	public void insertReplace(T point) {
-		this.root = root.insertReplace(point);
+		this.root.insertReplace(point);
 	}
 }

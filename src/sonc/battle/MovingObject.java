@@ -69,7 +69,7 @@ public abstract class MovingObject implements HasPoint
 	
 	protected double headingTo(MovingObject other)
 	{
-		double heading = Math.atan2(other.y - this.y, other.x - this.x) - this.heading;
+		double heading = Math.atan2(other.y - this.y, other.x - this.x); //- this.heading;
 		return (heading >= 0) ? heading : heading + (2 * Math.PI);
 	}
 	

@@ -78,7 +78,7 @@ public class GuidedMissile extends Munition implements HasPoint
 	//Methods
 	void move()
 	{
-		double angle = this.headingTo(this.target);
+		double angle = this.headingTo(this.target) - this.getHeading(); 
 		double difference = (2 * Math.PI) - angle;
 		
 		if (difference < angle)

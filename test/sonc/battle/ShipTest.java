@@ -30,6 +30,7 @@ public class ShipTest extends TestData {
 	@BeforeClass
 	public static void setUpClass() {
 		Ship.setMaxShipRotation(2*Math.PI);
+		
 		Trie.setCapacity(5); //It should be delegated by us or not?
 	}
 	
