@@ -7,75 +7,90 @@ import sonc.battle.Ship;
 import sonc.shared.SoncException;
 import sonc.utils.AgentBuilder;
 
-public class Player implements Serializable
-{
-	//Attributes
+/**
+ * A player of the SonC game. An instance of this class records the player's
+ * authentication and the last code submitted.
+ * 
+ * @author Ricardo Giovani
+ * @version 1.0
+ *
+ */
+public class Player implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String nick;
 	private String password;
 	private String code;
 
-	//Getters and setters	
-	String getNick()
-	{
+	String getNick() {
 		return this.nick;
 	}
-	void setNick(String nick)
-	{
+
+	void setNick(String nick) {
 		this.nick = nick;
 	}
-	String getPassword()
-	{
+
+	String getPassword() {
 		return this.password;
 	}
-	public void setPassword(String password)
-	{
+
+	public void setPassword(String password) {
 		this.password = password;
 	}
-	String getCode()
-	{
+
+	String getCode() {
 		return this.code;
 	}
-	void setCode(String code)
-	{
+
+	void setCode(String code) {
 		this.code = code;
 	}
-	
-	//Constructors
-	Player(String nick, String password)
-	{
+
+	Player(String nick, String password) {
 		this.nick = nick;
 		this.password = password;
-	}	
-	
-	//Methods
-	void checkCode() throws SoncException
-	{
-		try
-		{
+	}
+
+	/**
+	 * Try to compile and instance the submitted code and report errors. It uses the
+	 * AgentBuilder class.
+	 * 
+	 * SoncException - on errors in compiling or instancing the code
+	 */
+	void checkCode() throws SoncException {
+		try {
 			AgentBuilder agentBuilder = new AgentBuilder();
 			agentBuilder.getInstance(Ship.class, this.code, this.nick);
-		} catch (IOException | InstantiationException | IllegalAccessException | NameNotFoundException | NullPointerException e)
-		{
+		} catch (IOException | InstantiationException | IllegalAccessException | NameNotFoundException
+				| NullPointerException e) {
 			throw new SoncException("An error occurred on checking player's code.", e);
 		}
 	}
-	
-	Ship instanceShip()
-	{
-		try
-		{
+
+	/**
+	 * Make an instance of {@link Ship} after compiling and instancing the submitted
+	 * code. This instance is stored in this class
+	 * 
+	 * @return instance ship or null if exceptions occurred when compiling the code
+	 *         or instancing the class
+	 */
+	Ship instanceShip() {
+		try {
 			this.checkCode();
 			AgentBuilder agentBuilder = new AgentBuilder();
 			return agentBuilder.getInstance(Ship.class, this.code, this.nick);
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
-	boolean authenticate(String password)
-	{
+
+	/**
+	 * Check the authentication of this player
+	 * 
+	 * @param password
+	 *            - for checking
+	 * @return true password is the expected, false otherwise
+	 */
+	boolean authenticate(String password) {
 		return this.password.equals(password);
 	}
 }

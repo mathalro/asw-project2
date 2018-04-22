@@ -2,9 +2,13 @@ package sonc.battle;
 
 import sonc.quad.HasPoint;
 
-public class GuidedMissile extends Munition implements HasPoint
-{
-	//Attributes
+/**
+ * Type of missile that that seeks the target
+ * 
+ * @author Ricardo Giovani
+ * @version 1.0
+ */
+public class GuidedMissile extends Munition implements HasPoint {
 	private static int damage = 600;
 	private static double maxMissileRotation;
 	private static double initialSpeed;
@@ -12,83 +16,76 @@ public class GuidedMissile extends Munition implements HasPoint
 	private double maxSpeed;
 	private int size;
 	private String color;
-	private MovingObject target; 
-	
-	//Getters and setters
-	public static void setDamage(int damage)
-	{
+	private MovingObject target;
+
+	public static void setDamage(int damage) {
 		GuidedMissile.damage = damage;
-	}	
-	public static int getDamage()
-	{
+	}
+
+	public static int getDamage() {
 		return GuidedMissile.damage;
-	}	
-	static double getMaxMissileRotation()
-	{
+	}
+
+	static double getMaxMissileRotation() {
 		return GuidedMissile.maxMissileRotation;
-	}	
-	static void setMaxMissileRotation(double maxMissileRotation)
-	{
+	}
+
+	static void setMaxMissileRotation(double maxMissileRotation) {
 		GuidedMissile.maxMissileRotation = maxMissileRotation;
-	}	
-	public static void setInitialSpeed(double speed)
-	{
+	}
+
+	public static void setInitialSpeed(double speed) {
 		GuidedMissile.initialSpeed = speed;
-	}	
-	public static double getInitialSpeed()
-	{
+	}
+
+	public static double getInitialSpeed() {
 		return GuidedMissile.initialSpeed;
-	}	
-	static int getFireDelay()
-	{
+	}
+
+	static int getFireDelay() {
 		return GuidedMissile.fireDelay;
-	}	
-	static void setFireDelay(int fireDelay)
-	{
+	}
+
+	static void setFireDelay(int fireDelay) {
 		GuidedMissile.fireDelay = fireDelay;
-	}	
-	double getMaxSpeed()
-	{
+	}
+
+	double getMaxSpeed() {
 		return this.maxSpeed;
-	}	
-	double getMaxRotation()
-	{
+	}
+
+	double getMaxRotation() {
 		return GuidedMissile.maxMissileRotation;
-	}	
-	int getImpactDamage()
-	{
+	}
+
+	int getImpactDamage() {
 		return GuidedMissile.damage;
-	}	
-	public int getSize()
-	{
+	}
+
+	public int getSize() {
 		return this.size;
-	}	
-	public String getColor()
-	{
+	}
+
+	public String getColor() {
 		return this.color;
 	}
-	
-	//Constructors
-	GuidedMissile(double heading, MovingObject target)
-	{
+
+	GuidedMissile(double heading, MovingObject target) {
 		super(600, heading, GuidedMissile.initialSpeed);
 		this.target = target;
 	}
-	
-	//Methods
-	void move()
-	{
-		double angle = this.headingTo(this.target) - this.getHeading(); 
+
+	void move() {
+		double angle = this.headingTo(this.target) - this.getHeading();
 		double difference = (2 * Math.PI) - angle;
-		
+
 		if (difference < angle)
 			this.doRotate(-difference);
 		else
 			this.doRotate(angle);
 	}
-	
-	int fireDelay()
-	{
+
+	int fireDelay() {
 		return GuidedMissile.fireDelay;
-	}	
+	}
 }

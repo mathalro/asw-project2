@@ -2,9 +2,13 @@ package sonc.battle;
 
 import sonc.quad.HasPoint;
 
-public class Bullet extends Munition implements HasPoint
-{
-	//Attributes
+/**
+ * A simple munition that moves in a straight line.
+ * 
+ * @author Ricardo Giovani
+ * @version 1.0
+ */
+public class Bullet extends Munition implements HasPoint {
 	private static int damage = 10;
 	private static double initialSpeed;
 	private static int fireDelay;
@@ -13,66 +17,60 @@ public class Bullet extends Munition implements HasPoint
 	private double maxRotation;
 	private int size;
 	private String color;
-		
-	//Getters and setters
-	static void setDamage(int damage)
-	{
+
+	static void setDamage(int damage) {
 		Bullet.damage = damage;
-	}	
-	static int getDamage()
-	{
+	}
+
+	static int getDamage() {
 		return Bullet.damage;
-	}	
-	static void setInitialSpeed(double speed)
-	{
+	}
+
+	static void setInitialSpeed(double speed) {
 		Bullet.initialSpeed = speed;
-	}	
-	static double getInitialSpeed()
-	{
+	}
+
+	static double getInitialSpeed() {
 		return Bullet.initialSpeed;
-	}	
-	static int getFireDelay()
-	{
+	}
+
+	static int getFireDelay() {
 		return Bullet.fireDelay;
-	}	
-	static void setFireDelay(int fireDelay)
-	{
+	}
+
+	static void setFireDelay(int fireDelay) {
 		Bullet.fireDelay = fireDelay;
-	}	
-	double getMaxSpeed()
-	{
+	}
+
+	double getMaxSpeed() {
 		return this.maxSpeed;
-	}	
-	double getMaxSpeedChange()
-	{
+	}
+
+	double getMaxSpeedChange() {
 		return this.maxSpeedChange;
-	}	
-	double getMaxRotation()
-	{
+	}
+
+	double getMaxRotation() {
 		return this.maxRotation;
-	}	
-	int getImpactDamage()
-	{
+	}
+
+	int getImpactDamage() {
 		return Bullet.damage;
-	}	
-	public int getSize()
-	{
+	}
+
+	public int getSize() {
 		return this.size;
-	}	
-	public String getColor()
-	{
+	}
+
+	public String getColor() {
 		return this.color;
 	}
-		
-	//Constructors
-	public Bullet(double heading)
-	{
+
+	public Bullet(double heading) {
 		super(10, heading, Bullet.initialSpeed);
 	}
-	
-	//Methods
-	int fireDelay()
-	{
+
+	int fireDelay() {
 		return Bullet.fireDelay;
 	}
 }

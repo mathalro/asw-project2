@@ -1,10 +1,10 @@
 package sonc.quad;
 
 /**
- * Class to represent a single geometric point
+ * Representation of a single geometric point
  * 
  * @author Matheus Rosa
- *
+ * @version 1.0
  */
 public class Point<T> {
 	private T x, y;
@@ -30,5 +30,5 @@ public class Point<T> {
 	public void setY(T y) {
 		this.y = y;
 	}
-	
+
 }
